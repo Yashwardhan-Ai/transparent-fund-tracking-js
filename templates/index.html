@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🚀 Transparent Fund Tracking For Local Community Projects</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #2575fc;
+            --secondary: #6a11cb;
+            --bg: #f0f2f5;
+            --text: #222c37;
+            --success: #4caf50;
+            --pending: #ff9800;
+            --danger: #f44336;
+            --radius: 12px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: linear-gradient(110deg, var(--secondary), var(--primary));
+            color: #fff;
+            padding: 28px 0;
+            text-align: center;
+            box-shadow: 0 6px 16px rgba(38, 83, 252, 0.12);
+            border-bottom-left-radius: var(--radius);
+            border-bottom-right-radius: var(--radius);
+            animation: headerFadeIn 0.8s ease-out;
+        }
+
+        @keyframes headerFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 90%;
+            margin: 20px auto;
+            background: #fff;
+            border-radius: var(--radius);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e0e0e0;
+            gap: 10px;
+        }
+
+        .tab-button {
+            background: none;
+            border: none;
+            padding: 14px 28px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            color: #6b7280;
+            transition: color 0.3s, border-bottom 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-button:hover {
+            color: var(--primary);
+        }
+
+        .tab-button.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .project-card {
+            background: #fff;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 16px rgba(37, 117, 252, 0.12);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--secondary);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 24px rgba(37, 117, 252, 0.2);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .project-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .project-id {
+            background: #eef;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .milestone-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+        }
+
+        .milestone-item {
+            padding: 10px 0;
+            border-bottom: 1px dashed #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .milestone-status {
+            font-weight: 600;
+            padding: 5px 10px;
+            border-radius: 50px;
+            font-size: 12px;
+            color: white;
+        }
+
+        .status-pending {
+            background-color: var(--pending);
+        }
+
+        .status-approved {
+            background-color: var(--success);
+        }
+
+        .status-released {
+            background-color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .form-group button {
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .form-group button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .milestone-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .add-milestone-btn {
+            background: #eef;
+            color: var(--primary);
+            border: 1px dashed var(--primary);
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            width: auto;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #e0f7fa;
+            color: #00796b;
+            word-wrap: break-word;
+        }
+
+        .feedback.error {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: #1a1f31;
+                color: #eaeaea;
+            }
+
+            .container,
+            .project-card {
+                background: #222842;
+            }
+
+            header {
+                background: linear-gradient(110deg, #3a265d, #174477);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>🚀 Transparent Fund Tracking For Local Community Projects</h1>
+        <p>A DApp for decentralized project funding and management</p>
+    </header>
+
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab(event, 'view-projects')">View All Projects</button>
+            <button class="tab-button" onclick="openTab(event, 'create-project')">Create Project</button>
+            <button class="tab-button" onclick="openTab(event, 'donate')">Donate</button>
+        </div>
+
+        <div id="view-projects" class="tab-content active">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>All Projects</h2>
+                <button class="add-milestone-btn" onclick="fetchProjects()">Refresh Projects</button>
+            </div>
+            <div id="projects-list">Loading...</div>
+        </div>
+
+        <div id="create-project" class="tab-content">
+            <h2>Create a New Project</h2>
+            <form id="create-project-form">
+                <div class="form-group">
+                    <label for="project-name">Project Name</label>
+                    <input type="text" id="project-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="project-owner">Project Owner Address</label>
+                    <input type="text" id="project-owner" required>
+                </div>
+                <div class="form-group">
+                    <label for="stakeholders">Stakeholder Addresses (comma separated)</label>
+                    <input type="text" id="stakeholders" required>
+                </div>
+                <h3>Milestones</h3>
+                <div id="milestones-container">
+                    <div class="milestone-input-group">
+                        <input type="text" placeholder="Milestone Description" class="milestone-desc" required>
+                        <input type="number" step="any" placeholder="Amount (ETH)" class="milestone-amount" required>
+                    </div>
+                </div>
+                <button type="button" class="add-milestone-btn" onclick="addMilestoneInput()">+ Add Milestone</button>
+                <div class="form-group" style="margin-top: 20px;">
+                    <button type="submit">Create Project</button>
+                </div>
+            </form>
+            <div id="create-project-feedback" class="feedback" style="display: none;"></div>
+        </div>
+
+        <div id="donate" class="tab-content">
+            <h2>Donate to a Project</h2>
+            <form id="donate-form">
+                <div class="form-group">
+                    <label for="donate-project-id">Project ID</label>
+                    <input type="number" id="donate-project-id" required>
+                </div>
+                <div class="form-group">
+                    <label for="donate-amount">Amount (ETH)</label>
+                    <input type="number" step="any" id="donate-amount" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit">Donate</button>
+                </div>
+            </form>
+            <div id="donate-feedback" class="feedback" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = window.location.origin;
+
+        function openTab(evt, tabName) {
+            document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+            document.querySelectorAll('.tab-button').forEach(tb => tb.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        async function fetchProjects() {
+            const listDiv = document.getElementById('projects-list');
+            listDiv.innerHTML = '<p>Refreshing projects...</p>';
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/projects`);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const projects = await response.json();
+
+                if (!projects || projects.length === 0) {
+                    listDiv.innerHTML = '<p>No projects found. Create one to get started!</p>';
+                    return;
+                }
+
+                listDiv.innerHTML = '';
+                projects.forEach(p => {
+                    const card = document.createElement('div');
+                    card.className = 'project-card';
+                    const milestonesHtml = p.milestones.map((m, i) => {
+                        let status = m.fundsReleased ? 'Released' : m.approved ? 'Approved' : 'Pending';
+                        let statusClass = m.fundsReleased ? 'status-released' : m.approved ? 'status-approved' : 'status-pending';
+                        return `<li class="milestone-item">
+            <span><strong>Milestone ${i}:</strong> ${m.description} (${m.amount} ETH)</span>
+            <span class="milestone-status ${statusClass}">${status}</span>
+          </li>`;
+                    }).join('');
+                    card.innerHTML = `
+          <div class="project-header">
+            <span class="project-title">${p.name}</span>
+            <span class="project-id">ID: ${p.id}</span>
+          </div>
+          <p><strong>Owner:</strong> <small>${p.owner}</small></p>
+          <p><strong>Total Raised:</strong> ${p.totalRaised} ETH</p>
+          <p><strong>Funds Released:</strong> ${p.releasedFunds} ETH</p>
+          <ul class="milestone-list">${milestonesHtml}</ul>`;
+                    listDiv.appendChild(card);
+                });
+            } catch (error) {
+                listDiv.innerHTML = `<p class="feedback error">Error fetching projects: ${error.message}</p>`;
+            }
+        }
+
+        async function handleFormSubmit(formId, apiUrl, feedbackId) {
+            document.getElementById(formId).addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const feedbackDiv = document.getElementById(feedbackId);
+                feedbackDiv.style.display = 'block';
+                feedbackDiv.className = 'feedback';
+                feedbackDiv.innerHTML = 'Sending transaction... please wait.';
+                let body;
+
+                if (formId === 'create-project-form') {
+                    body = {
+                        name: document.getElementById('project-name').value,
+                        owner: document.getElementById('project-owner').value,
+                        stakeholders: document.getElementById('stakeholders').value.split(',').map(s => s.trim()),
+                        milestoneDescriptions: Array.from(document.querySelectorAll('.milestone-desc')).map(i => i.value),
+                        milestoneAmounts: Array.from(document.querySelectorAll('.milestone-amount')).map(i => i.value)
+                    };
+                } else if (formId === 'donate-form') {
+                    body = {
+                        projectId: document.getElementById('donate-project-id').value,
+                        amount: document.getElementById('donate-amount').value
+                    };
+                }
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(body)
+                    });
+                    const result = await response.json();
+                    if (!response.ok) throw new Error(result.error || `HTTP error! status: ${response.status}`);
+
+                    feedbackDiv.innerHTML = `✅ Success! Transaction Hash: ${result.txHash}`;
+                    document.getElementById(formId).reset();
+                    fetchProjects();
+                } catch (error) {
+                    feedbackDiv.className = 'feedback error';
+                    feedbackDiv.innerHTML = `❌ Error: ${error.message}`;
+                }
+            });
+        }
+
+        function addMilestoneInput() {
+            const container = document.getElementById('milestones-container');
+            const newGroup = document.createElement('div');
+            newGroup.className = 'milestone-input-group';
+            newGroup.innerHTML = `
+      <input type="text" placeholder="Milestone Description" class="milestone-desc" required>
+      <input type="number" step="any" placeholder="Amount (ETH)" class="milestone-amount" required>`;
+            container.appendChild(newGroup);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchProjects();
+            handleFormSubmit('create-project-form', `${API_BASE_URL}/api/create_project`, 'create-project-feedback');
+            handleFormSubmit('donate-form', `${API_BASE_URL}/api/donate`, 'donate-feedback');
+        });
+    </script>
+</body>
+
+</html>
